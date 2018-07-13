@@ -2,11 +2,11 @@ package guru.springfamework.services;
 
 import guru.springfamework.api.v1.mapper.CustomerMapper;
 import guru.springfamework.api.v1.model.CustomerDTO;
-import guru.springfamework.api.v1.model.CustomerListDTO;
 import guru.springfamework.domain.Customer;
 import guru.springfamework.repositories.CustomerRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -17,6 +17,8 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CustomerServiceTest {
@@ -31,7 +33,7 @@ public class CustomerServiceTest {
     private CustomerRepository customerRepository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         customerService = new CustomerServiceImpl(CustomerMapper.INSTANCE, customerRepository);
@@ -91,7 +93,7 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void replaceExistingCustomer() {
+    public void replaceCustomer() {
 
         CustomerDTO customerDTO = createTestCustomerDTO();
 
@@ -104,12 +106,38 @@ public class CustomerServiceTest {
         when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
 
         // when
-        CustomerDTO savedDTO = customerService.replaceExistingCustomer(1L, createTestCustomerDTO());
+        CustomerDTO savedDTO = customerService.replaceCustomer(1L, customerDTO);
 
         // then
         assertEquals(customerDTO.getFirstname(), savedDTO.getFirstname());
         assertEquals(customerDTO.getLastname(), savedDTO.getLastname());
         assertEquals("/api/v1/customers/1", savedCustomer.getCustomerUrl());
+    }
+
+    @Test
+    public void patchCustomer() {
+
+        CustomerDTO patchCustomerDTO = new CustomerDTO();
+        patchCustomerDTO.setFirstname("New");
+
+        Customer existingCustomer = new Customer();
+        existingCustomer.setFirstName("Previous");
+        existingCustomer.setLastName("Name");
+        existingCustomer.setId(1L);
+
+        // given
+        when(customerRepository.findById(anyLong())).thenReturn(Optional.of(existingCustomer));
+        when(customerRepository.save(any(Customer.class))).thenReturn(new Customer());
+
+        ArgumentCaptor<Customer> argumentCaptor = ArgumentCaptor.forClass(Customer.class);
+
+        // when
+        CustomerDTO savedDTO = customerService.patchCustomer(1L, patchCustomerDTO);
+
+        // then
+        verify(customerRepository, times(1)).save(argumentCaptor.capture());
+        assertEquals(patchCustomerDTO.getFirstname(), argumentCaptor.getValue().getFirstName());
+        assertEquals(existingCustomer.getLastName(), argumentCaptor.getValue().getLastName());
     }
 
     private Customer createTestCustomer() {
