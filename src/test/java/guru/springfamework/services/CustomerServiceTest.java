@@ -90,6 +90,28 @@ public class CustomerServiceTest {
         assertEquals("/api/v1/customers/1", savedCustomer.getCustomerUrl());
     }
 
+    @Test
+    public void replaceExistingCustomer() {
+
+        CustomerDTO customerDTO = createTestCustomerDTO();
+
+        Customer savedCustomer = new Customer();
+        savedCustomer.setFirstName(customerDTO.getFirstname());
+        savedCustomer.setLastName(customerDTO.getLastname());
+        savedCustomer.setId(1L);
+
+        // given
+        when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
+
+        // when
+        CustomerDTO savedDTO = customerService.replaceExistingCustomer(1L, createTestCustomerDTO());
+
+        // then
+        assertEquals(customerDTO.getFirstname(), savedDTO.getFirstname());
+        assertEquals(customerDTO.getLastname(), savedDTO.getLastname());
+        assertEquals("/api/v1/customers/1", savedCustomer.getCustomerUrl());
+    }
+
     private Customer createTestCustomer() {
         Customer customer = new Customer();
         customer.setId(ID);
