@@ -1,6 +1,7 @@
 package guru.springfamework.api.v1.mapper;
 
 import guru.springfamework.api.v1.model.CustomerDTO;
+import guru.springfamework.controllers.v1.CustomerController;
 import guru.springfamework.domain.Customer;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +29,6 @@ public class CustomerMapperTest {
 
         assertEquals(FIRST_NAME, customerDTO.getFirstname());
         assertEquals(LAST_NAME, customerDTO.getLastname());
-        assertEquals("/api/v1/customers/1", customerDTO.getCustomer_url());
+        assertEquals(CustomerController.BASE_URL + "/1", customerDTO.getCustomer_url());
     }
 }

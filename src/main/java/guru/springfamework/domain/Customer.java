@@ -1,5 +1,6 @@
 package guru.springfamework.domain;
 
+import guru.springfamework.controllers.v1.CustomerController;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -14,8 +15,6 @@ import javax.persistence.Id;
 @Entity
 public class Customer {
 
-    private static final String BASE_URL = "/api/v1/customers/"; // TODO: get from spring config
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +25,6 @@ public class Customer {
     private String customerUrl;
 
     public String getCustomerUrl() {
-        return BASE_URL + id;
+        return CustomerController.BASE_URL + "/" + id;
     }
 }
