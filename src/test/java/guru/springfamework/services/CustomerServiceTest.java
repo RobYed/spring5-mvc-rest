@@ -117,6 +117,7 @@ public class CustomerServiceTest {
     @Test
     public void patchCustomer() {
 
+        // given
         CustomerDTO patchCustomerDTO = new CustomerDTO();
         patchCustomerDTO.setFirstname("New");
 
@@ -125,7 +126,6 @@ public class CustomerServiceTest {
         existingCustomer.setLastName("Name");
         existingCustomer.setId(1L);
 
-        // given
         when(customerRepository.findById(anyLong())).thenReturn(Optional.of(existingCustomer));
         when(customerRepository.save(any(Customer.class))).thenReturn(new Customer());
 
@@ -138,6 +138,15 @@ public class CustomerServiceTest {
         verify(customerRepository, times(1)).save(argumentCaptor.capture());
         assertEquals(patchCustomerDTO.getFirstname(), argumentCaptor.getValue().getFirstName());
         assertEquals(existingCustomer.getLastName(), argumentCaptor.getValue().getLastName());
+    }
+
+    @Test
+    public void deleteCustomer() {
+        // when
+        customerService.deleteCustomer(1L);
+
+        // then
+        verify(customerRepository, times(1)).deleteById(anyLong());
     }
 
     private Customer createTestCustomer() {
