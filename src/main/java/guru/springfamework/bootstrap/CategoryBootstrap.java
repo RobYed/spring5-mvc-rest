@@ -3,15 +3,17 @@ package guru.springfamework.bootstrap;
 import guru.springfamework.domain.Category;
 import guru.springfamework.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by jt on 9/24/17.
  */
-@Component
+@Slf4j
 @RequiredArgsConstructor
-public class Bootstrap implements CommandLineRunner {
+@Component
+public class CategoryBootstrap implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
 
@@ -38,8 +40,6 @@ public class Bootstrap implements CommandLineRunner {
         categoryRepository.save(exotic);
         categoryRepository.save(nuts);
 
-
-        System.out.println("Data Loaded = " + categoryRepository.count() );
-
+        log.debug("Category Data Loaded = " + categoryRepository.count() );
     }
 }
