@@ -2,6 +2,7 @@ package guru.springfamework.bootstrap;
 
 import guru.springfamework.domain.Category;
 import guru.springfamework.repositories.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -9,13 +10,10 @@ import org.springframework.stereotype.Component;
  * Created by jt on 9/24/17.
  */
 @Component
-public class Bootstrap implements CommandLineRunner{
+@RequiredArgsConstructor
+public class Bootstrap implements CommandLineRunner {
 
-    private CategoryRepository categoryRepository;
-
-    public Bootstrap(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    private final CategoryRepository categoryRepository;
 
     @Override
     public void run(String... args) throws Exception {
