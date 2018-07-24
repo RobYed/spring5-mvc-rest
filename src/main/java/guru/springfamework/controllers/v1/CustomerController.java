@@ -8,9 +8,11 @@ import org.leandreck.endpoints.annotations.TypeScriptEndpoint;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @TypeScriptEndpoint
 @RequiredArgsConstructor
-@RestController
+@RestController()
 @RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
 
@@ -18,37 +20,37 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public CustomerListDTO getAllCustomers() {
         return new CustomerListDTO(customerService.getAllCustomers());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(name = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public CustomerDTO getCustomerById(@PathVariable Long id) {
         return customerService.getCustomerById(id);
     }
 
-    @PostMapping
+    @PostMapping(produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDTO createNewCustomer(@RequestBody CustomerDTO customerDTO) {
         return customerService.createNewCustomer(customerDTO);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(name = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public CustomerDTO updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
         return customerService.replaceCustomer(id, customerDTO);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping(name = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public CustomerDTO patchCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
         return customerService.patchCustomer(id, customerDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(name = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public void deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);

@@ -105,6 +105,11 @@
 							<artifactId>mapstruct-processor</artifactId>
 							<version>${org.mapstruct.version}</version>
 						</path>
+						<path>
+							<groupId>org.leandreck.endpoints</groupId>
+							<artifactId>annotations</artifactId>
+							<version>0.4.0</version>
+						</path>
 					</annotationProcessorPaths>
 					<compilerArgs>
 						<compilerArg>
