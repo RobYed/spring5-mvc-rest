@@ -1,5 +1,6 @@
 package guru.springfamework.api.v1.model;
 
+import guru.springfamework.domain.Gender;
 import lombok.Data;
 
 @Data
